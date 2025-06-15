@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 30 25% 95%; /* Light beige-gray */
+    --foreground: 0 0% 25%; /* Dark gray text */
+
+    --card: 0 0% 100%; /* White cards */
+    --card-foreground: 0 0% 25%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 25%;
+
+    --primary: 28 85% 62%; /* Orange-peach for 'Explore' button */
+    --primary-foreground: 0 0% 100%; /* White text on primary */
+
+    --secondary: 30 10% 82%; /* Hero background - Light grayish taupe */
+    --secondary-foreground: 0 0% 25%; /* Dark text on secondary */
+
+    --muted: 30 30% 92%; /* Light beige for "Read More" / "Sign Up" button backgrounds */
+    --muted-foreground: 0 0% 35%; /* Darker gray for text on muted */
+
+    --accent: 28 85% 62%; /* Same as primary */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 30 10% 88%; /* Subtle border */
+    --input: 0 0% 98%; /* Input background */
+    --ring: 28 85% 65%; /* Ring focus color, related to primary */
+    
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 30 5% 15%; /* Dark grayish brown */
+    --foreground: 30 15% 85%; /* Light beige text */
+
+    --card: 30 5% 20%;
+    --card-foreground: 30 15% 85%;
+
+    --popover: 30 5% 15%;
+    --popover-foreground: 30 15% 85%;
+
+    --primary: 28 75% 60%; /* Saffron/Orange for primary in dark mode */
+    --primary-foreground: 0 0% 10%; /* Dark text on primary */
+
+    --secondary: 30 8% 28%; /* Darker hero background */
+    --secondary-foreground: 30 15% 85%;
+
+    --muted: 30 10% 25%; /* Darker muted */
+    --muted-foreground: 30 15% 70%;
+
+    --accent: 28 75% 60%; /* Accent similar to primary */
+    --accent-foreground: 0 0% 10%;
+
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 30 10% 30%;
+    --input: 30 5% 22%;
+    --ring: 28 75% 65%; 
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* Smooth scrolling for anchor links */
+    scroll-behavior: smooth;
+  }
+  /* Custom scrollbar for a more modern look - optional */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/70;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary;
+  }
+
+  /* Basic animation utility classes */
+  .fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+  .slide-in-up {
+    animation: slideInUp 0.5s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Custom styles for H1 and H2 within .prose */
+  .prose h1,
+  .prose-sm h1,
+  .prose-base h1,
+  .prose-lg h1,
+  .prose-xl h1,
+  .prose-2xl h1 {
+    @apply font-bold text-[32px] !text-foreground; /* Use !text-foreground to ensure it overrides prose-headings:text-primary */
+                                                    /* font-family will still be inherited from prose-headings:font-headline */
+  }
+
+  .prose h2,
+  .prose-sm h2,
+  .prose-base h2,
+  .prose-lg h2,
+  .prose-xl h2,
+  .prose-2xl h2 {
+    @apply font-bold text-[24px] !text-foreground; /* Use !text-foreground to ensure it overrides prose-headings:text-primary */
+                                                    /* font-family will still be inherited from prose-headings:font-headline */
+  }
+}
