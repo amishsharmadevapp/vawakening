@@ -1,4 +1,4 @@
-giu[build]
+[build]
   command = "npm run build"
   publish = ".next"
 
