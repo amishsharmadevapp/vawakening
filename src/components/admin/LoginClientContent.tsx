@@ -30,7 +30,8 @@ export default function LoginClientContent() {
       if (user) {
         // User is signed in, redirect to dashboard/blogs
         router.push(targetRedirectPath);
-      } else {\n        // No user is signed in.
+      } else {
+        // No user is signed in.
         setIsLoading(false); // Allow rendering login form
       }
     });
