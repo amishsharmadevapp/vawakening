@@ -135,9 +135,8 @@ export default function BlogForm({ post, action }: BlogFormProps) {
                 src={thumbnailUrl} 
                 alt="Thumbnail preview" 
                 width={200} 
-                height={120} 
+                height={120} // Adjusted for a more typical thumbnail aspect ratio
                 className="rounded-md object-cover border"
-                unoptimized={true}
                 onError={(e) => {
                     // Fallback if image fails to load, e.g. broken URL
                     e.currentTarget.src = 'https://placehold.co/200x120.png?text=Invalid+URL';

@@ -3,17 +3,21 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { supabase } from '@/lib/supabaseClient'; 
+import { supabase } from '@/lib/supabaseClient'; // Supabase client for data operations
 import type { BlogPostDocument } from '@/types/blog';
-import { stripHtml } from '@/lib/utils'; 
+import { stripHtml } from '@/lib/utils'; // Import the utility
 
+// Authentication is now handled by the AdminDashboardLayout using Firebase.
+// These server actions assume they are called by an authenticated admin.
 
 export async function addBlogPostAction(formData: FormData) {
-  const author = "Admin"; 
+  const author = "Admin"; // Placeholder for author, Firebase user info could be integrated later
 
   const title = formData.get('title') as string;
   const content = formData.get('content') as string;
+  // Thumbnail URL is expected to be a string (GitHub raw link)
   const thumbnailUrl = formData.get('thumbnailUrl') as string | null; 
+  // Tags will be stored as a comma-separated string
   const tags = formData.get('tags') as string | null;
 
 
@@ -25,13 +29,15 @@ export async function addBlogPostAction(formData: FormData) {
 
   try {
     const plainTextContent = stripHtml(content);
+    // Construct the object for Supabase, ensuring `id` and `slug` are not part of initial insert
+    // created_at and updated_at will be handled by Supabase defaults/triggers
     const newPostData: Omit<BlogPostDocument, 'id' | 'created_at' | 'updated_at' | 'slug'> = {
       title,
-      content, 
+      content, // Store the original HTML content
       author, 
       thumbnailUrl: thumbnailUrl || undefined, 
       tags: tags, 
-      excerpt: plainTextContent.substring(0, 200) + (plainTextContent.length > 200 ? '...' : ''), 
+      excerpt: plainTextContent.substring(0, 200) + (plainTextContent.length > 200 ? '...' : ''), // Generate excerpt from plain text
     };
     
     const { data: insertedPost, error: insertError } = await supabase
@@ -86,13 +92,14 @@ export async function updateBlogPostAction(id: string, formData: FormData) {
 
   try {
     const plainTextContent = stripHtml(content);
-    const updatedData: Partial<Omit<BlogPostDocument, 'id' | 'created_at' | 'slug' | 'updated_at'>> = {
+    const updatedData: Partial<Omit<BlogPostDocument, 'id' | 'created_at' | 'slug'>> & { updated_at: string } = {
       title,
-      content, 
+      content, // Store the original HTML content
       author,
       thumbnailUrl: thumbnailUrl || undefined,
       tags: tags,
-      excerpt: plainTextContent.substring(0, 200) + (plainTextContent.length > 200 ? '...' : ''), 
+      excerpt: plainTextContent.substring(0, 200) + (plainTextContent.length > 200 ? '...' : ''), // Re-generate excerpt from plain text
+      updated_at: new Date().toISOString(), 
     };
     
     const { error } = await supabase
@@ -220,3 +227,4 @@ export async function getFeaturedBlogPosts(count: number): Promise<BlogPostDocum
     tags: post.tags || null,
   })) as BlogPostDocument[];
 }
+

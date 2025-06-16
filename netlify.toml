@@ -2,8 +2,20 @@
   command = "npm run build"
   publish = ".next"
 
-[build.environment]
-  NEXT_TELEMETRY_DISABLED = "1"
+# The Netlify Next.js plugin (Essential Next.js) will automatically handle
+# API routes, server-side rendering, image optimization, etc.
+# This configuration file ensures the basic build command and publish directory are set.
 
-[[plugins]]
-  package = "@netlify/plugin-nextjs" 
+# If you need to set specific environment variables for the build,
+# it's recommended to do so in the Netlify UI under Site settings > Build & deploy > Environment.
+
+# Example for specifying a Node.js version if needed (Netlify usually picks a recent LTS)
+# [build.environment]
+#   NODE_VERSION = "18"
+
+# You can add redirect and rewrite rules here if necessary.
+# For example:
+# [[redirects]]
+#   from = "/old-path"
+#   to = "/new-path"
+#   status = 301

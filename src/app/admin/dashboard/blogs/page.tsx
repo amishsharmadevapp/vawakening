@@ -2,18 +2,18 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { getBlogPostsForAdmin, deleteBlogPostAction } from '@/app/admin/dashboard/blogs/actions'; 
+import { getBlogPostsForAdmin } from '@/app/admin/dashboard/blogs/actions'; // deleteBlogPostAction removed from here
 import { PlusCircle, Edit, ListChecks, ExternalLink, CalendarDays, Tag } from 'lucide-react';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import type { BlogPostDocument } from '@/types/blog';
-import DeletePostButton from '@/components/admin/DeletePostButton'; 
+import DeletePostButton from '@/components/admin/DeletePostButton'; // Import the new component
 
 
 export const metadata = {
   title: 'Manage Blog Posts - Admin',
-  robots: 'noindex, nofollow', 
+  robots: 'noindex, nofollow', // Prevent indexing of admin pages
 };
 
 export default async function ManageBlogsPage() {
@@ -56,8 +56,8 @@ export default async function ManageBlogsPage() {
                         <Image
                           src={post.thumbnailUrl}
                           alt={post.title}
-                          fill
-                          style={{objectFit:"cover"}}
+                          layout="fill"
+                          objectFit="cover"
                           className="md:rounded-l-lg md:rounded-r-none rounded-t-lg"
                         />
                       </div>
@@ -90,10 +90,8 @@ export default async function ManageBlogsPage() {
                             <Edit className="mr-1.5 h-4 w-4" /> Edit
                           </Link>
                         </Button>
-                        <DeletePostButton 
-                          postId={post.id} 
-                          postTitle={post.title} 
-                        />
+                        {/* Use the new DeletePostButton Client Component */}
+                        <DeletePostButton postId={post.id} postTitle={post.title} />
                         <Button asChild variant="ghost" size="sm" className="text-accent hover:text-accent/80">
                            <Link href={`/blog/${post.slug || post.id}`} target="_blank" rel="noopener noreferrer">
                              View Post <ExternalLink className="ml-1.5 h-4 w-4" />

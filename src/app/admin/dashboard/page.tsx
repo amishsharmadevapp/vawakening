@@ -1,11 +1,11 @@
 
-'use client';
+'use client'; // Make this a client component to handle Firebase signout
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { LogOut, LayoutDashboard, Newspaper, Settings, Library, HandHeart } from 'lucide-react'; // Added Library, HandHeart
+import { LogOut, LayoutDashboard, Newspaper, Settings, PlusCircle } from 'lucide-react';
 import Link from 'next/link';
-import { auth } from '@/lib/firebaseConfig';
+import { auth } from '@/lib/firebaseConfig'; // Firebase auth instance
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
@@ -21,49 +21,46 @@ export default function AdminDashboardPage() {
         title: 'Logged Out',
         description: 'You have been successfully logged out.',
       });
-      router.push('/'); // Redirect to home page after logout
-    } catch (error: any) {
+      router.push('/'); // Redirect to homepage after logout
+    } catch (error) {
       console.error('Firebase Logout Error:', error);
       toast({
         variant: 'destructive',
         title: 'Logout Failed',
-        description: error.message || 'Could not log you out. Please try again.',
+        description: 'Could not log you out. Please try again.',
       });
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-muted p-4">
-      <Card className="w-full max-w-md shadow-xl">
+      <Card className="w-full max-w-2xl shadow-xl">
         <CardHeader className="text-center">
            <div className="flex items-center justify-center gap-2 mb-2">
             <LayoutDashboard className="h-8 w-8 text-primary" />
             <CardTitle className="font-headline text-3xl text-primary">Admin Dashboard</CardTitle>
           </div>
-          <p className="text-muted-foreground">Vivekananda Awakening Foundation Admin Portal.</p>
+          <p className="text-muted-foreground">Welcome to the Vivekananda Awakening Foundation Admin Portal.</p>
         </CardHeader>
         <CardContent className="text-center space-y-6">
           <p className="text-lg">
-            You are successfully logged in as an administrator.
+            You are successfully logged in.
           </p>
-
+          
           <div className="space-y-3">
             <p className="font-semibold text-foreground text-lg">Content Management</p>
-            <Button variant="outline" asChild className="w-full text-base py-6">
-                <Link href="/admin/dashboard/blogs">
-                    <Newspaper className="mr-2 h-5 w-5" /> Manage Blog Posts
-                </Link>
-            </Button>
-            <Button variant="outline" asChild className="w-full text-base py-6">
-                <Link href="/admin/dashboard/resources">
-                    <Library className="mr-2 h-5 w-5" /> Manage Resources
-                </Link>
-            </Button>
-            <Button variant="outline" asChild className="w-full text-base py-6">
-                <Link href="/admin/dashboard/programs">
-                    <HandHeart className="mr-2 h-5 w-5" /> Manage Programs
-                </Link>
-            </Button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <Button variant="outline" asChild className="w-full text-base py-6">
+                    <Link href="/admin/dashboard/blogs">
+                        <Newspaper className="mr-2 h-5 w-5" /> Manage Blog Posts
+                    </Link>
+                </Button>
+                 <Button variant="outline" asChild className="w-full text-base py-6">
+                    <Link href="/admin/dashboard/blogs/create">
+                         <PlusCircle className="mr-2 h-5 w-5" /> Create New Blog Post
+                    </Link>
+                </Button>
+            </div>
           </div>
 
            <div className="space-y-3 pt-4">
