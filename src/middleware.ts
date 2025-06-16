@@ -3,28 +3,35 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// With client-side Firebase Auth, middleware plays a less direct role in session validation.
-// The primary auth check and redirection will happen in `src/app/admin/dashboard/layout.tsx`.
-// This middleware primarily defines which paths are part of the "admin" concern.
-// It won't redirect to login itself, as that's handled client-side by the layout.
-
+// This middleware will run before a request is completed.
+// With Firebase Auth, session management is primarily handled by the Firebase SDK on the client-side.
+// Server-side session cookies can be used (Next.js examples with 'firebase-admin' and custom handling),
+// but for this setup, we rely on client-side checks in layouts.
+// This middleware can be simplified or used for other purposes if needed.
 export async function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+  const res = NextResponse.next();
+  
+  // No Supabase-specific session refresh needed here anymore.
+  // Firebase SDK handles its session cookies.
 
-  // If accessing the login page itself, allow it.
-  if (pathname === '/admin/login') {
-    return NextResponse.next();
-  }
+  // You could add other middleware logic here if necessary,
+  // for example, redirecting based on path or other headers.
 
-  // For other /admin paths, the client-side guard in AdminDashboardLayout
-  // will handle redirection if the user is not authenticated via Firebase client SDK.
-  // This middleware can be used for other purposes in the future, like setting headers.
-
-  return NextResponse.next();
+  return res;
 }
 
 export const config = {
   matcher: [
-    '/admin/:path*', // Matches all paths under /admin
+    // We can keep matching /admin paths if there's other logic,
+    // but primary auth enforcement is now client-side in the layout.
+    '/admin/:path*', 
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * Feel free to modify this pattern to include more paths.
+     */
+    // '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };

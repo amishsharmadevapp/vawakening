@@ -1,7 +1,7 @@
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import LoginClientContent from '@/components/admin/LoginClientContent';
 
-export default function AdminLoginPage() {
+export default function LoginPage() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <LoginClientContent />

@@ -9,7 +9,7 @@ export type Language = 'en' | 'hi';
 interface LanguageContextType {
   language: Language;
   setLanguage: Dispatch<SetStateAction<Language>>;
-  t: (key: string, replacements?: Record<string, string | number>) => string;
+  t: (key: string, replacements?: Record<string, string | number | undefined>, defaultValue?: string) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -116,11 +116,17 @@ const translations: Record<Language, Record<string, string>> = {
     mythology_no_articles_message: "No articles available at the moment. Check back soon!",
     mythology_no_videos_message: "No videos available at the moment. Check back soon!",
     mythology_no_podcasts_message: "No podcasts available at the moment. Check back soon!",
+    mythology_no_resources_message: "No resources available yet. Check back soon!",
     mythology_vyas_alt_icon: "Vyas AI Spiritual Guide Icon",
     mythology_vyas_alt_guide: "Vyas, your AI Spiritual Guide",
     mythology_vyas_title: "Meet Vyas: Your AI Spiritual Guide",
     mythology_vyas_description: "Vyas is your AI companion, deeply rooted in the wisdom of Indian spiritual traditions, including the Bhagavad Gita, Patanjali Yoga Sutras, and the teachings of Osho. Engage in insightful conversations, explore spiritual concepts, and receive guidance on your journey towards self-discovery and inner peace.",
     mythology_vyas_cta: "Chat with Vyas",
+    mythology_read_article_button: "Read Article",
+    mythology_watch_video_button: "Watch Video",
+    mythology_listen_podcast_button: "Listen to Podcast",
+    mythology_view_resource_button: "View Resource",
+
 
     // Blog Page
     blog_hero_alt_icon: "Vivekananda Awakening Foundation Blog Icon",
@@ -245,11 +251,17 @@ const translations: Record<Language, Record<string, string>> = {
     mythology_no_articles_message: "फिलहाल कोई लेख उपलब्ध नहीं है। जल्द ही वापस देखें!",
     mythology_no_videos_message: "फिलहाल कोई वीडियो उपलब्ध नहीं है। जल्द ही वापस देखें!",
     mythology_no_podcasts_message: "फिलहाल कोई पॉडकास्ट उपलब्ध नहीं है। जल्द ही वापस देखें!",
+    mythology_no_resources_message: "अभी तक कोई संसाधन उपलब्ध नहीं है। कृपया बाद में पुनः देखें!",
     mythology_vyas_alt_icon: "व्यास एआई आध्यात्मिक मार्गदर्शक चिह्न",
     mythology_vyas_alt_guide: "व्यास, आपके एआई आध्यात्मिक मार्गदर्शक",
     mythology_vyas_title: "मिलिए व्यास से: आपके एआई आध्यात्मिक मार्गदर्शक",
     mythology_vyas_description: "व्यास आपके एआई साथी हैं, जो भगवद् गीता, पतंजलि योग सूत्र और ओशो की शिक्षाओं सहित भारतीय आध्यात्मिक परंपराओं के ज्ञान में गहराई से निहित हैं। अंतर्दृष्टिपूर्ण बातचीत में शामिल हों, आध्यात्मिक अवधारणाओं का पता लगाएं, और आत्म-खोज और आंतरिक शांति की ओर अपनी यात्रा पर मार्गदर्शन प्राप्त करें।",
     mythology_vyas_cta: "व्यास से चैट करें",
+    mythology_read_article_button: "लेख पढ़ें",
+    mythology_watch_video_button: "वीडियो देखें",
+    mythology_listen_podcast_button: "पॉडकास्ट सुनें",
+    mythology_view_resource_button: "संसाधन देखें",
+
 
     // Blog Page (using English as placeholder for Hindi)
     blog_hero_alt_icon: "विवेकानन्द जागरण फाउंडेशन ब्लॉग चिह्न",
@@ -292,11 +304,14 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     document.documentElement.lang = language; // Update lang attribute on HTML element
   }, [language]);
 
-  const t = (key: string, replacements?: Record<string, string | number>): string => {
-    let translation = translations[language][key] || translations['en'][key] || key; // Fallback to English, then key
+  const t = (key: string, replacements?: Record<string, string | number | undefined>, defaultValue?: string): string => {
+    let translation = translations[language]?.[key] || translations['en']?.[key] || defaultValue || key;
     if (replacements) {
       Object.keys(replacements).forEach((placeholder) => {
-        translation = translation.replace(new RegExp(`{${placeholder}}`, 'g'), String(replacements[placeholder]));
+        const replacementValue = replacements[placeholder];
+        if (replacementValue !== undefined) {
+          translation = translation.replace(new RegExp(`{${placeholder}}`, 'g'), String(replacementValue));
+        }
       });
     }
     return translation;

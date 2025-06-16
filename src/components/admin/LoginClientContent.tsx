@@ -10,6 +10,7 @@ import { LogIn } from 'lucide-react';
 import { auth } from '@/lib/firebaseConfig'; // Import Firebase auth
 import { signInWithEmailAndPassword, onAuthStateChanged, type User } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function LoginClientContent() {
   const router = useRouter();
@@ -19,6 +20,8 @@ export default function LoginClientContent() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true); // Start true to check auth state
   const { toast } = useToast();
+  const { t } = useLanguage();
+  const redirectTo = searchParams.get('redirectTo') || '/admin/dashboard';
   
   const redirectedFrom = searchParams.get('redirectedFrom');
   // Target /admin/dashboard/blogs as the main admin area after login
@@ -109,7 +112,7 @@ export default function LoginClientContent() {
         <form onSubmit={handleLogin}>
           <CardHeader className="text-center">
             <CardTitle className="font-headline text-2xl text-primary">Admin Portal</CardTitle>
-            <CardDescription>Please log in to access the dashboard.</CardDescription>
+            <CardDescription>{t('login_subtitle')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -146,7 +149,7 @@ export default function LoginClientContent() {
           </CardContent>
           <CardFooter>
             <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90" disabled={isLoading}>
-              {isLoading ? 'Logging in...' : <><LogIn className="mr-2 h-4 w-4" /> Log In</>}
+              {isLoading ? 'Logging in...' : <><LogIn className="mr-2 h-4 w-4" /> {t('login_button')}</>}
             </Button>
           </CardFooter>
         </form>

@@ -126,11 +126,11 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
       {/* Mobile Header */}
-      <div className="container mx-auto flex h-16 items-center justify-between px-4 md:hidden">
+      <div className="container mx-auto flex h-16 items-center justify-between md:hidden"> {/* Removed px-4 */}
         <Link href="/" className="flex items-center flex-shrink-0" onClick={closeSheet}>
           {logoLinkContent}
         </Link>
-        <div className="flex items-center">
+        <div className="flex items-center pr-4"> {/* Added pr-4 */}
           {/* Language toggle button for mobile, outside the sheet trigger */}
           {languageToggleButton}
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
