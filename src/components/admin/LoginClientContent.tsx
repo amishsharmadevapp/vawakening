@@ -1,14 +1,14 @@
 'use client';
 
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, FormEvent, useEffect } from 'react';
 import { LogIn } from 'lucide-react';
-import { auth } from '@/lib/firebaseConfig'; // Import Firebase auth
-import { signInWithEmailAndPassword, onAuthStateChanged, type User } from 'firebase/auth';
+import { auth } from '@/lib/firebaseConfig';
+import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -18,36 +18,28 @@ export default function LoginClientContent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true); // Start true to check auth state
+  const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
   const { t } = useLanguage();
-  const redirectTo = searchParams.get('redirectTo') || '/admin/dashboard';
   
   const redirectedFrom = searchParams.get('redirectedFrom');
-  // Target /admin/dashboard/blogs as the main admin area after login
-  const targetRedirectPath = redirectedFrom && redirectedFrom.startsWith('/admin/dashboard') ? redirectedFrom : '/admin/dashboard/blogs';
-
+  const targetRedirectPath = redirectedFrom && redirectedFrom.startsWith('/admin/dashboard') ? redirectedFrom : '/admin/dashboard';
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in, redirect to dashboard/blogs
         router.push(targetRedirectPath);
       } else {
-        // No user is signed in.
-        setIsLoading(false); // Allow rendering login form
+        setIsLoading(false);
       }
     });
-
-    return () => unsubscribe(); // Cleanup subscription on unmount
+    return () => unsubscribe();
   }, [router, targetRedirectPath]);
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
     setError(null);
-
-    console.log('Attempting login with email:', email); // Log email for debugging
 
     if (!email || !password) {
       setError('Email and password are required.');
@@ -62,29 +54,24 @@ export default function LoginClientContent() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      // onAuthStateChanged in useEffect will handle the redirect, but we can push optimistically
       toast({
         title: 'Login Successful',
         description: 'Redirecting to dashboard...',
       });
-      router.push(targetRedirectPath); // Redirect immediately on success
     } catch (e: any) {
-      console.error('Firebase Sign-In Error:', e);
       let errorMessage = 'Invalid login credentials. Please try again.';
       if (e.code) {
         switch (e.code) {
           case 'auth/user-not-found':
           case 'auth/wrong-password':
-          case 'auth/invalid-credential': // Common error code for wrong email/password
+          case 'auth/invalid-credential':
             errorMessage = 'Invalid email or password.';
             break;
           case 'auth/invalid-email':
-            errorMessage = 'Please enter a valid email address.';
+            errorMessage = 'The email address is not valid.';
             break;
-          // Add other Firebase auth error codes as needed
-          // e.g. auth/too-many-requests
           default:
-            errorMessage = 'An unexpected error occurred. Please try again.';
+            errorMessage = e.message || 'An unexpected error occurred during login.';
         }
       }
       setError(errorMessage);
@@ -98,11 +85,11 @@ export default function LoginClientContent() {
     }
   };
   
-  if (isLoading && !error) { // Only show loading if not actively showing an error from initial auth check
+  if (isLoading && !error) { 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-muted">
-            <p>Loading...</p>
-        </div>
+      <div className="flex items-center justify-center min-h-screen bg-muted">
+        <p>Loading...</p>
+      </div>
     );
   }
 
@@ -141,7 +128,7 @@ export default function LoginClientContent() {
               />
             </div>
             {redirectedFrom && (
-                <input type="hidden" name="redirectedFrom" value={redirectedFrom} />
+              <input type="hidden" name="redirectedFrom" value={redirectedFrom} />
             )}
             {error && (
               <p className="text-sm text-destructive">{error}</p>

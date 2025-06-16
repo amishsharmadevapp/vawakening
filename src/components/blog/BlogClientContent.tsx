@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import Image from 'next/image';
 import BlogPostCard from '@/components/shared/BlogPostCard';
@@ -31,7 +31,7 @@ export default function BlogClientContent() {
   const { t, language } = useLanguage();
   const router = useRouter();
   const searchParams = useSearchParams();
-
+  
   const [allDisplayPosts, setAllDisplayPosts] = useState<BlogPostDisplay[]>([]);
   const [searchQuery, setSearchQuery] = useState(searchParams.get('query') || '');
   const [currentFilterQuery, setCurrentFilterQuery] = useState(searchParams.get('query') || '');
@@ -47,7 +47,7 @@ export default function BlogClientContent() {
     }
     fetchPosts();
   }, []);
-
+  
   useEffect(() => {
     setCurrentFilterQuery(searchParams.get('query') || '');
   }, [searchParams]);
@@ -57,24 +57,23 @@ export default function BlogClientContent() {
     const newPath = searchQuery ? `/blog?query=${encodeURIComponent(searchQuery)}` : '/blog';
     router.push(newPath);
   };
-
+  
   const postsToDisplay = useMemo(() => {
     if (!currentFilterQuery) return allDisplayPosts;
     const lowerQuery = currentFilterQuery.toLowerCase();
-    return allDisplayPosts.filter(post =>
+    return allDisplayPosts.filter(post => 
       post.title.toLowerCase().includes(lowerQuery) ||
       (post.excerpt && post.excerpt.toLowerCase().includes(lowerQuery)) ||
       (post.tags && post.tags.some(tag => tag.toLowerCase().includes(lowerQuery)))
     );
   }, [allDisplayPosts, currentFilterQuery]);
 
-
   return (
     <div className="bg-background text-foreground">
       {/* Hero Section */}
       <section className="py-16 md:py-24 bg-gradient-to-br from-secondary to-primary/80 text-primary-foreground">
         <div className="container mx-auto px-4 md:px-6 text-center">
-           <div className="inline-block p-3 sm:p-4 bg-primary-foreground/10 rounded-full mb-6 animate-fade-in">
+          <div className="inline-block p-3 sm:p-4 bg-primary-foreground/10 rounded-full mb-6 animate-fade-in">
             <Image
               src="https://github.com/amishsharmadevapp/vivekafound/blob/main/Untitled_design__10_-removebg-preview.png?raw=true"
               alt={t('blog_hero_alt_icon') || "Vivekananda Awakening Foundation Blog Icon"}
@@ -98,8 +97,8 @@ export default function BlogClientContent() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="mb-8 md:mb-12">
             <form onSubmit={handleSearchSubmit} className="flex gap-2 max-w-lg mx-auto">
-              <Input
-                type="search"
+              <Input 
+                type="search" 
                 name="query"
                 placeholder={t('blog_search_placeholder')}
                 className="flex-grow"
@@ -126,8 +125,8 @@ export default function BlogClientContent() {
             <div className="text-center py-12">
               <h2 className="font-headline text-xl sm:text-2xl text-primary mb-4">{t('blog_no_posts_title')}</h2>
               <p className="text-md sm:text-lg text-muted-foreground">
-                {currentFilterQuery ?
-                  (t('blog_no_posts_query_message', { query: currentFilterQuery })) :
+                {currentFilterQuery ? 
+                  (t('blog_no_posts_query_message', { query: currentFilterQuery })) : 
                   (t('blog_no_posts_default_message'))}
               </p>
             </div>

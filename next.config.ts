@@ -1,7 +1,7 @@
-
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
   /* config options here */
   typescript: {
     ignoreBuildErrors: true,
@@ -36,13 +36,6 @@ const nextConfig: NextConfig = {
         pathname: '/storage/v1/object/public/**',
       }
     ].filter(pattern => pattern.hostname !== undefined) as NextConfig['images']['remotePatterns'], // Filter out undefined hostnames
-  },
-  experimental: {
-    allowedDevOrigins: [ // Add your specific cloud workstation domains if needed
-      // Example: 'your-dev-domain.cloudworkstations.dev'
-      '6000-firebase-studio-1749914785375.cluster-fkltigo73ncaixtmokrzxhwsfc.cloudworkstations.dev',
-      '9000-firebase-studio-1749914785375.cluster-fkltigo73ncaixtmokrzxhwsfc.cloudworkstations.dev',
-    ],
   },
 };
 
