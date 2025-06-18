@@ -3,26 +3,28 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Facebook, Twitter, Instagram, Linkedin, Youtube } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useLanguage } from '@/context/LanguageContext'; // Import useLanguage
+import { useLanguage } from '@/context/LanguageContext'; 
+import { usePathname } from 'next/navigation'; // Import usePathname
 
 const logoUrl = "https://raw.githubusercontent.com/amishsharmadevapp/vivekafound/main/Blue_Purple_Business_Linkedin_Banner__1_-removebg-preview.png";
 
 export default function Footer() {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-  const { t } = useLanguage(); // Get translation function
+  const { t } = useLanguage(); 
+  const pathname = usePathname(); // Get current pathname
 
   useEffect(() => {
     setCurrentYear(new Date().getFullYear());
   }, []);
   
   const footerLinks = [
-    { href: '/about', labelKey: 'header_about' }, // Reusing header keys for simplicity
+    { href: '/about', labelKey: 'header_about' }, 
     { href: '/programs', labelKey: 'header_programs' },
     { href: '/blog', labelKey: 'header_blog' },
     { href: '/mythology-meditation', labelKey: 'header_resources' },
-    // { href: '/contact', labelKey: 'header_contact' }, // Removed contact link
+    { href: '/store', labelKey: 'header_store' },
     { href: '/sitemap', labelKey: 'footer_sitemap' },
   ];
 
@@ -34,7 +36,7 @@ export default function Footer() {
             <Link href="/" className="block mb-4">
               <Image
                 src={logoUrl}
-                alt="Vivekananda Awakening Foundation Logo"
+                alt={t('footer_vivekananda_foundation_logo_alt', { defaultValue: "Vivekananda Awakening Foundation Logo" })}
                 width={190}
                 height={50}
                 className="object-contain"
@@ -50,27 +52,27 @@ export default function Footer() {
               {footerLinks.map(link => (
                 <li key={link.href}><Link href={link.href} className="hover:text-primary">{t(link.labelKey)}</Link></li>
               ))}
-               <li>
-                <Link href="/admin/login" className="text-xs text-muted-foreground/70 hover:text-primary/80 transition-colors">
-                  {t('footer_admin')}
-                </Link>
-              </li>
+               {/* Conditionally render the Admin link */}
+              {pathname === '/about' && (
+                <li>
+                  <Link href="/admin/login" className="text-xs text-muted-foreground/70 hover:text-primary/80 transition-colors">
+                    {t('footer_admin')}
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
           <div>
             <h3 className="font-headline text-lg font-semibold text-foreground mb-4">{t('footer_connect_with_us')}</h3>
             <div className="flex space-x-4 mb-4">
-              <Link href="#" aria-label="Facebook" className="text-muted-foreground hover:text-primary"><Facebook size={20} /></Link>
-              <Link href="#" aria-label="Twitter" className="text-muted-foreground hover:text-primary"><Twitter size={20} /></Link>
-              <Link href="#" aria-label="Instagram" className="text-muted-foreground hover:text-primary"><Instagram size={20} /></Link>
-              <Link href="#" aria-label="LinkedIn" className="text-muted-foreground hover:text-primary"><Linkedin size={20} /></Link>
-              <Link href="#" aria-label="YouTube" className="text-muted-foreground hover:text-primary"><Youtube size={20} /></Link>
+              <Link href="https://www.facebook.com/profile.php?id=61577705844773" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-muted-foreground hover:text-primary"><Facebook size={20} /></Link>
+              <Link href="https://www.instagram.com/vivekanandaawakeningfoundation/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-muted-foreground hover:text-primary"><Instagram size={20} /></Link>
+              <Link href="https://www.linkedin.com/in/amit-sharma-42a421370/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-muted-foreground hover:text-primary"><Linkedin size={20} /></Link>
+              <Link href="https://www.youtube.com/@VivekanandaAwakeningFoundation" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="text-muted-foreground hover:text-primary"><Youtube size={20} /></Link>
             </div>
-            <p className="text-sm">
-              {t('footer_address')}
-            </p>
-            <p className="text-sm">
-              {t('footer_email_prompt')} <a href="mailto:info@vivekawell.org" className="hover:text-primary">info@vivekawell.org</a>
+            <div className="text-sm" dangerouslySetInnerHTML={{ __html: t('footer_address') }} />
+            <p className="text-sm mt-2">
+              {t('footer_email_prompt')} <a href="mailto:info@vawakening.com" className="hover:text-primary">info@vawakening.com</a>
             </p>
           </div>
         </div>

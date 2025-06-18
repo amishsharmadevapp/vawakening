@@ -3,7 +3,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { LogOut, LayoutDashboard, Newspaper, Settings, Library, HandHeart } from 'lucide-react'; // Added Library, HandHeart
+import { LogOut, LayoutDashboard, Newspaper, Settings, Library, HandHeart, ShoppingCart } from 'lucide-react'; // Added ShoppingCart
 import Link from 'next/link';
 import { auth } from '@/lib/firebaseConfig';
 import { signOut } from 'firebase/auth';
@@ -62,6 +62,11 @@ export default function AdminDashboardPage() {
             <Button variant="outline" asChild className="w-full text-base py-6">
                 <Link href="/admin/dashboard/programs">
                     <HandHeart className="mr-2 h-5 w-5" /> Manage Programs
+                </Link>
+            </Button>
+            <Button variant="outline" asChild className="w-full text-base py-6">
+                <Link href="/admin/dashboard/store">
+                    <ShoppingCart className="mr-2 h-5 w-5" /> Manage Store Products
                 </Link>
             </Button>
           </div>

@@ -6,14 +6,15 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, X, Languages } from 'lucide-react'; // Added Languages icon
+import { Menu, X, Languages, ShoppingCart } from 'lucide-react'; // Added ShoppingCart
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { useLanguage, type Language } from '@/context/LanguageContext'; // Import useLanguage
+import { useLanguage, type Language } from '@/context/LanguageContext'; 
 
 interface NavItem {
   href: string;
-  labelKey: string; // Changed to labelKey for translation
+  labelKey: string; 
+  icon?: React.ElementType;
 }
 
 const logoUrl = "https://raw.githubusercontent.com/amishsharmadevapp/vivekafound/main/Blue_Purple_Business_Linkedin_Banner__1_-removebg-preview.png";
@@ -22,7 +23,7 @@ export default function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const pathname = usePathname();
   const [isMounted, setIsMounted] = useState(false);
-  const { language, setLanguage, t } = useLanguage(); // Get language context
+  const { language, setLanguage, t } = useLanguage(); 
 
   useEffect(() => {
     setIsMounted(true);
@@ -51,8 +52,8 @@ export default function Header() {
     { href: '/programs', labelKey: 'header_programs' },
     { href: '/mythology-meditation', labelKey: 'header_resources' },
     { href: '/blog', labelKey: 'header_blog' },
+    { href: '/store', labelKey: 'header_store', icon: ShoppingCart },
     { href: '/ai-guide', labelKey: 'header_vyas' },
-    // { href: '/contact', labelKey: 'header_contact' }, // Removed Contact link
   ];
 
   const languageToggleButton = (
@@ -61,7 +62,7 @@ export default function Header() {
       size="sm"
       onClick={toggleLanguage}
       className="text-muted-foreground hover:text-primary px-2 sm:px-3"
-      data-hide="true" // For hiding from bots
+      data-hide="true" 
       aria-label={language === 'en' ? t('header_toggle_to_hindi') : t('header_toggle_to_english')}
     >
       <Languages className="h-5 w-5 sm:mr-1" />
@@ -90,7 +91,6 @@ export default function Header() {
 
 
   if (!isMounted) {
-    // Fallback for non-JS environments or before hydration - simpler layout
     return (
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
@@ -104,9 +104,10 @@ export default function Header() {
                 key={item.href}
                 className={cn(
                   buttonVariants({ variant: 'ghost', size: 'sm' }),
-                  "font-medium transition-colors text-muted-foreground hover:text-primary px-3 py-2"
+                  "font-medium transition-colors text-muted-foreground hover:text-primary px-3 py-2 flex items-center"
                 )}
               >
+                {item.icon && <item.icon className="mr-1.5 h-4 w-4" />}
                 {t(item.labelKey)} 
               </Link>
             ))}
@@ -125,13 +126,11 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
-      {/* Mobile Header */}
-      <div className="container mx-auto flex h-16 items-center justify-between md:hidden"> {/* Removed px-4 */}
+      <div className="container mx-auto flex h-16 items-center justify-between md:hidden"> 
         <Link href="/" className="flex items-center flex-shrink-0" onClick={closeSheet}>
           {logoLinkContent}
         </Link>
-        <div className="flex items-center pr-4"> {/* Added pr-4 */}
-          {/* Language toggle button for mobile, outside the sheet trigger */}
+        <div className="flex items-center pr-4"> 
           {languageToggleButton}
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
@@ -160,14 +159,14 @@ export default function Header() {
                     href={item.href}
                     onClick={closeSheet}
                       className={cn(
-                      "text-base font-medium transition-colors hover:text-primary py-1.5 px-2 rounded-md",
+                      "text-base font-medium transition-colors hover:text-primary py-1.5 px-2 rounded-md flex items-center",
                       pathname === item.href ? "text-primary bg-muted" : "text-foreground"
                     )}
                   >
+                    {item.icon && <item.icon className="mr-2 h-5 w-5" />}
                     {t(item.labelKey)} 
                   </Link>
                 ))}
-                {/* Mobile language toggle inside the sheet */}
                 <div className="pt-2 border-t border-border mt-2">
                  {mobileLanguageToggleButton}
                 </div>
@@ -177,7 +176,6 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Desktop Header */}
       <div className="container mx-auto hidden h-16 items-center justify-center px-4 md:flex md:relative md:px-6">
         <div className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2">
           <Link href="/" className="flex items-center" onClick={closeSheet}>
@@ -192,11 +190,12 @@ export default function Header() {
               href={item.href}
               className={cn(
                 buttonVariants({ variant: 'ghost', size: 'sm' }),
-                "font-medium transition-colors text-muted-foreground hover:text-primary",
+                "font-medium transition-colors text-muted-foreground hover:text-primary flex items-center",
                 pathname === item.href ? "text-primary" : "",
                 "px-3"
               )}
             >
+              {item.icon && <item.icon className="mr-1.5 h-4 w-4" />}
               {t(item.labelKey)}
             </Link>
           ))}
