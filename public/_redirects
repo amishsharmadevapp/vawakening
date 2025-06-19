@@ -6,4 +6,7 @@
 /* /index.html 200
 
 # Remove any potential /lander redirects
-/lander / 301 
+/lander / 301!
+
+# Ensure root works
+/ /index.html 200 
