@@ -1,5 +1,5 @@
 [build]
-  base    = "lander"         # Point to the lander directory where your Next.js app lives
+  base    = "lander"
   command = "npm run build"
   publish = ".next"
 
