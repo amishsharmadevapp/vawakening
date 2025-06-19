@@ -8,11 +8,7 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  // Enable static export for Netlify
-  output: 'export',
-  trailingSlash: true,
   images: {
-    unoptimized: true, // Required for static export
     remotePatterns: [
       {
         protocol: 'https',
@@ -22,23 +18,23 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'raw.githubusercontent.com', // For GitHub raw image URLs
+        hostname: 'raw.githubusercontent.com',
         port: '',
         pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'github.com', // For other GitHub images if needed
+        hostname: 'github.com',
         port: '',
         pathname: '/**',
       },
-      { // Ensure your Supabase project hostname is included if you ever use Supabase storage for other images
+      {
         protocol: 'https',
         hostname: process.env.NEXT_PUBLIC_SUPABASE_URL ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname : undefined,
         port: '',
         pathname: '/storage/v1/object/public/**',
       }
-    ].filter(pattern => pattern.hostname !== undefined) as NextConfig['images']['remotePatterns'], // Filter out undefined hostnames
+    ].filter(pattern => pattern.hostname !== undefined) as NextConfig['images']['remotePatterns'],
   },
 };
 
