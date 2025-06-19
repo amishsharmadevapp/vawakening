@@ -6,4 +6,24 @@
   NEXT_TELEMETRY_DISABLED = "1"
 
 [[plugins]]
-  package = "@netlify/plugin-nextjs" 
+  package = "@netlify/plugin-nextjs"
+
+# Redirect rules to ensure proper domain handling
+[[redirects]]
+  from = "/lander"
+  to = "/"
+  status = 301
+  force = true
+
+# Handle Next.js routing properly
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  conditions = {Role = ["admin"]}
+
+# Ensure root domain works
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200 

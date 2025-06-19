@@ -1,0 +1,9 @@
+# Redirect rules for Netlify
+# Ensure root domain works properly
+/ /index.html 200
+
+# Handle Next.js routing
+/* /index.html 200
+
+# Remove any potential /lander redirects
+/lander / 301 
