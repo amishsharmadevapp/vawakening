@@ -8,21 +8,19 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# Force redirect from /lander to root
-[[redirects]]
-  from = "/lander"
-  to = "/"
-  status = 301
-  force = true
+# The following redirects are commented out to prevent unwanted behavior
+# [[redirects]]
+#   from = "/lander"
+#   to = "/"
+#   status = 301
+#   force = true
 
-# Handle all routes properly for Next.js
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# [[redirects]]
+#   from = "/*"
+#   to = "/index.html"
+#   status = 200
 
-# Ensure root domain works without any redirects
-[[redirects]]
-  from = "/"
-  to = "/index.html"
-  status = 200 
+# [[redirects]]
+#   from = "/"
+#   to = "/index.html"
+#   status = 200 
