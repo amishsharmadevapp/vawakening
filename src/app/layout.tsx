@@ -6,6 +6,7 @@ import Footer from '@/components/layout/Footer';
 import { LanguageProvider } from '@/context/LanguageContext'; // Import LanguageProvider
 import Script from 'next/script';
 import Analytics from '@/components/Analytics';
+import { Suspense } from 'react';
 
 // Static metadata is fine here, dynamic titles will be handled client-side in each page
 export const metadata: Metadata = {
@@ -53,8 +54,9 @@ export default function RootLayout({
           </main>
           <Footer />
           <Toaster />
-          {/* Analytics route change tracker */}
-          <Analytics />
+          <Suspense fallback={null}>
+            <Analytics />
+          </Suspense>
         </LanguageProvider>
       </body>
     </html>
