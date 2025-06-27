@@ -38,6 +38,7 @@ const translations: Record<Language, Record<string, string>> = {
     footer_sitemap: 'Sitemap',
     footer_admin: 'Admin',
     footer_vivekananda_foundation_logo_alt: 'Vivekananda Awakening Foundation Logo',
+    footer_webapp_credit: 'Web app solely created by <a href="https://www.linkedin.com/in/amish-sharma-301040313/" target="_blank" rel="noopener noreferrer" class="hover:text-primary">Amish Sharma</a>.',
 
 
     // Page Titles (used by individual pages to set document.title)
@@ -199,6 +200,8 @@ const translations: Record<Language, Record<string, string>> = {
     footer_sitemap: 'साइटमैप',
     footer_admin: 'एडमिन',
     footer_vivekananda_foundation_logo_alt: 'विवेकानंद अवेकनिंग फाउंडेशन लोगो',
+    footer_webapp_credit: 'वेब ऐप केवल <a href="https://www.linkedin.com/in/amish-sharma-301040313/" target="_blank" rel="noopener noreferrer" class="hover:text-primary">अमिश शर्मा</a> द्वारा बनाया गया है।',
+
 
     // Page Titles
     page_title_default: 'विवेकानंद अवेकनिंग फाउंडेशन',
@@ -381,4 +384,3 @@ export function useLanguage() {
   }
   return context;
 }
-
