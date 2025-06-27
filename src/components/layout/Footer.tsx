@@ -1,4 +1,3 @@
-
 "use client"; 
 
 import Link from 'next/link';
@@ -74,6 +73,12 @@ export default function Footer() {
             <p className="text-sm mt-2">
               {t('footer_email_prompt')} <a href="mailto:info@vawakening.com" className="hover:text-primary">info@vawakening.com</a>
             </p>
+             <p 
+                className="text-xs mt-4" 
+                dangerouslySetInnerHTML={{ 
+                    __html: t('footer_webapp_credit', {}, 'Web app solely created by <a href="https://www.linkedin.com/in/amish-sharma-301040313/" target="_blank" rel="noopener noreferrer" class="hover:text-primary">Amish Sharma</a>.') 
+                }} 
+            />
           </div>
         </div>
         <div className="mt-8 border-t border-border pt-8 text-center text-sm">
